@@ -2,11 +2,18 @@
 #include "ui_loginwindow.h"
 // #include <QDebug>
 
-loginwindow::loginwindow(QWidget *parent)
+loginwindow::loginwindow(UserType type, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::loginwindow)
+    , userType(type)
 {
     ui->setupUi(this);
+
+    if (userType == Cliente) {
+        dataFile = "clientes.txt";
+    } else {
+        dataFile = "admins.txt";
+    }
 }
 
 loginwindow::~loginwindow()

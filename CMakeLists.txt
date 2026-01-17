@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         loginwindow.h loginwindow.cpp loginwindow.ui
+        rolewindow.h rolewindow.cpp rolewindow.ui
 
 
 
