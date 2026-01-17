@@ -7,14 +7,18 @@ namespace Ui {
 class loginwindow;
 }
 
+enum UserType {
+    Cliente,
+    Administrador
+};
+
 class loginwindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit loginwindow(QWidget *parent = nullptr);
+    explicit loginwindow(UserType type, QWidget *parent = nullptr);
     ~loginwindow();
-
 
 private slots:
     void on_loginButton_clicked();
@@ -22,6 +26,8 @@ private slots:
 
 private:
     Ui::loginwindow *ui;
+    UserType userType;
+    QString dataFile;
 };
 
 #endif // LOGINWINDOW_H
