@@ -33,6 +33,9 @@
    </item>
    <item>
     <widget class="QPushButton" name="registerButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="text">
       <string>Register</string>
      </property>
