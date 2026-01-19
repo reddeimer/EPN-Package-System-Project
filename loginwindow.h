@@ -28,6 +28,7 @@ private:
     Ui::loginwindow *ui;
     UserType userType;
     QString dataFile;
+    bool validateLogin(const QString &cedula, const QString &password);
 };
 
 #endif // LOGINWINDOW_H
