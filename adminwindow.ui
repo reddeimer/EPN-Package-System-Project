@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>adminwindow</class>
+ <widget class="QWidget" name="adminwindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>802</width>
+    <height>630</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>781</width>
+     <height>611</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="Listado">
+    <property name="contextMenuPolicy">
+     <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
+    </property>
+    <attribute name="title">
+     <string>Listado</string>
+    </attribute>
+    <widget class="QLineEdit" name="filterEdit">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>9</y>
+       <width>241</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Ingrese la cédula para filtrar por cliente...</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="packagesTable">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>38</y>
+       <width>761</width>
+       <height>541</height>
+      </rect>
+     </property>
+     <property name="columnCount">
+      <number>5</number>
+     </property>
+     <column>
+      <property name="text">
+       <string>Cedula</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Cliente</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ID Paquete</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Estado</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fecha</string>
+      </property>
+     </column>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Buscar">
+    <attribute name="title">
+     <string>Buscar</string>
+    </attribute>
+    <widget class="QLineEdit" name="packageEdit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>201</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Ingrese el ID de paquete a buscar...</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="searchButton">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>10</y>
+       <width>80</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Buscar</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="resultLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>291</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Gestion">
+    <attribute name="title">
+     <string>Gestion</string>
+    </attribute>
+    <widget class="QLineEdit" name="manageEdit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>113</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>ID del paquete...</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="statusCombo">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>20</y>
+       <width>151</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+     <property name="placeholderText">
+      <string>Ingrese una opción...</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>En tránsito</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Entregado</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Cancelado</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="updateStatusButton">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>20</y>
+       <width>101</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Actualizar estado</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="manageMessageLabel">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>60</y>
+       <width>361</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
