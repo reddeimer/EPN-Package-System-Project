@@ -21,6 +21,8 @@ private:
 
 private slots:
     void on_searchButton_clicked();
+    void on_updateStatusButton_clicked();
+    void on_filterButton_clicked();
 };
 
 #endif // ADMINWINDOW_H

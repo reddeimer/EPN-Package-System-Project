@@ -25,7 +25,7 @@
    <property name="currentIndex">
     <number>1</number>
    </property>
-   <widget class="QWidget" name="Listado">
+   <widget class="QWidget" name="listado">
     <property name="contextMenuPolicy">
      <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
     </property>
@@ -84,9 +84,53 @@
      </column>
     </widget>
    </widget>
-   <widget class="QWidget" name="Buscar">
+   <widget class="QWidget" name="buscarCliente">
     <attribute name="title">
-     <string>Buscar</string>
+     <string>Buscar Cliente</string>
+    </attribute>
+    <widget class="QLineEdit" name="filterEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>241</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Ingrese la cédula del Cliente para filtrar...</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="filterButton">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>80</y>
+       <width>80</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Filtrar</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="filterLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>331</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="buscarID">
+    <attribute name="title">
+     <string>Buscar ID</string>
     </attribute>
     <widget class="QLineEdit" name="packageEdit">
      <property name="geometry">
@@ -128,7 +172,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="Gestion">
+   <widget class="QWidget" name="gestion">
     <attribute name="title">
      <string>Gestion</string>
     </attribute>
@@ -145,7 +189,7 @@
       <string>ID del paquete...</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="statusCombo">
+    <widget class="QComboBox" name="statusComboBox">
      <property name="geometry">
       <rect>
        <x>150</x>
