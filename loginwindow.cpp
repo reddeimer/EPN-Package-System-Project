@@ -1,8 +1,11 @@
+#include "adminwindow.h"
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
 #include <fstream>
-#include <string>
-// #include <QDebug>
+// #include <string>
+#include <QDebug>
+#include <QCoreApplication>
+#include <QDir>
 using namespace std;
 
 loginwindow::loginwindow(UserType type, QWidget *parent)
@@ -12,11 +15,16 @@ loginwindow::loginwindow(UserType type, QWidget *parent)
 {
     ui->setupUi(this);
 
-    if (userType == Cliente) {
-        dataFile = "clientes.txt";
+    QString basePath = QCoreApplication::applicationDirPath();
+
+    if (userType == Administrador) {
+        ui->registerButton->hide();
+        dataFile = basePath + "/data/admins.txt";
     } else {
-        dataFile = "admins.txt";
+        ui->registerButton->show();
+        dataFile = basePath + "/data/clientes.txt";
     }
+    qDebug() << "Ruta final del archivo: " << dataFile;
 }
 
 loginwindow::~loginwindow()
@@ -25,12 +33,16 @@ loginwindow::~loginwindow()
 }
 
 bool loginwindow::validateLogin(const QString &cedula, const QString &password) {
+    qDebug() << "Intentando abrir:" << dataFile;
     fstream file(dataFile.toStdString(), ios::in);
 
     if (!file.is_open()) {
+        qDebug() << "NO SE PUDO ABRIR EL ARCHIVO";
         ui->messageLabel->setText("No se pudo abrir el archivo");
         return false;
     }
+
+    qDebug() << "Archivo abierto correctamente";
 
     string line;
     while (getline(file, line)) {
@@ -52,7 +64,7 @@ bool loginwindow::validateLogin(const QString &cedula, const QString &password) 
 
 void loginwindow::on_loginButton_clicked() {
     // qDebug() << "LOGIN PRESIONADO";
-    ui ->messageLabel->setText("Probando...");
+    // ui ->messageLabel->setText("Probando...");
     QString cedula = ui ->cedulaEdit ->text();
     QString password = ui ->passwordEdit->text();
 
@@ -61,16 +73,15 @@ void loginwindow::on_loginButton_clicked() {
         return;
     }
 
-    // Prueba
-    // if (cedula == "123" && password == "123") {
-    //     ui ->messageLabel->setText("Login correcto");
-    // } else {
-    //     ui->messageLabel->setText("Usuario incorrecto");
-    // }
-    if (validateLogin(cedula, password)) {
-        ui->messageLabel->setText("Login correcto");
-    } else {
+    if (!validateLogin(cedula, password)) {
         ui->messageLabel->setText("Usuario incorrecto");
+        return;
+    }
+
+    if(userType == Administrador) {
+        adminwindow *admin = new adminwindow();
+        admin->show();
+        this->close();
     }
 
 }

@@ -22,12 +22,17 @@ set(PROJECT_SOURCES
         mainwindow.ui
 )
 
+file(COPY ${CMAKE_SOURCE_DIR}/data
+     DESTINATION ${CMAKE_BINARY_DIR})
+
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Proyecto_Programacion
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         loginwindow.h loginwindow.cpp loginwindow.ui
         rolewindow.h rolewindow.cpp rolewindow.ui
+        adminwindow.h adminwindow.cpp adminwindow.ui
 
 
 
