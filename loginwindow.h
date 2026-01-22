@@ -24,11 +24,14 @@ private slots:
     void on_loginButton_clicked();
     void on_registerButton_clicked();
 
+    void on_registerConfirmButton_clicked();
+
 private:
     Ui::loginwindow *ui;
     UserType userType;
     QString dataFile;
     bool validateLogin(const QString &cedula, const QString &password);
+    void volverLogin();
 };
 
 #endif // LOGINWINDOW_H
