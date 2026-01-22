@@ -1,11 +1,12 @@
 #include "adminwindow.h"
+#include "mainwindow.h"
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
-#include <fstream>
-// #include <string>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QDir>
+#include <QMessageBox>
+#include <QFile>
 using namespace std;
 
 loginwindow::loginwindow(UserType type, QWidget *parent)
@@ -16,15 +17,31 @@ loginwindow::loginwindow(UserType type, QWidget *parent)
     ui->setupUi(this);
 
     QString basePath = QCoreApplication::applicationDirPath();
+    QDir dir(basePath + "/data");
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
 
     if (userType == Administrador) {
         ui->registerButton->hide();
+        ui->regCedulaEdit->hide();
+        ui->regNombreEdit->hide();
+        ui->regApellidoEdit->hide();
+        ui->regMailEdit->hide();
+        ui->regPasswordEdit->hide();
+        ui->registerConfirmButton->hide();
+
         dataFile = basePath + "/data/admins.txt";
     } else {
         ui->registerButton->show();
+        ui->regCedulaEdit->hide();
+        ui->regNombreEdit->hide();
+        ui->regApellidoEdit->hide();
+        ui->regMailEdit->hide();
+        ui->regPasswordEdit->hide();
+        ui->registerConfirmButton->hide();
         dataFile = basePath + "/data/clientes.txt";
     }
-    qDebug() << "Ruta final del archivo: " << dataFile;
 }
 
 loginwindow::~loginwindow()
@@ -34,26 +51,30 @@ loginwindow::~loginwindow()
 
 bool loginwindow::validateLogin(const QString &cedula, const QString &password) {
     qDebug() << "Intentando abrir:" << dataFile;
-    fstream file(dataFile.toStdString(), ios::in);
+    QFile file(dataFile);
 
-    if (!file.is_open()) {
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "NO SE PUDO ABRIR EL ARCHIVO";
-        ui->messageLabel->setText("No se pudo abrir el archivo");
+        qDebug() << "No se pudo abrir el archivo, validar login";
         return false;
     }
 
     qDebug() << "Archivo abierto correctamente";
 
-    string line;
-    while (getline(file, line)) {
-        size_t pos = line.find(';');
-        if (pos == string::npos) {
+    QTextStream in(&file);
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+
+        QStringList parte = line.split(";");
+
+        if (parte.size() < 2) {
             continue;
         }
-        string fileCedula = line.substr(0, pos);
-        string filePassword = line.substr(pos+1);
+        QString fileCedula = parte[0].trimmed();
+        QString filePassword = parte[1].trimmed();
 
-        if (fileCedula == cedula.toStdString() && filePassword == password.toStdString()) {
+        if (fileCedula == cedula && filePassword == password) {
             file.close();
             return true;
         }
@@ -82,10 +103,80 @@ void loginwindow::on_loginButton_clicked() {
         adminwindow *admin = new adminwindow();
         admin->show();
         this->close();
+    } else {
+        MainWindow *main = new MainWindow();
+        main->show();
+        this->close();
+    }
+}
+
+void loginwindow::volverLogin() {
+    ui->cedulaEdit->show();
+    ui->passwordEdit->show();
+    ui->loginButton->show();
+    ui->registerButton->show();
+    ui->regCedulaEdit->hide();
+    ui->regNombreEdit->hide();
+    ui->regApellidoEdit->hide();
+    ui->regMailEdit->hide();
+    ui->regPasswordEdit->hide();
+    ui->registerConfirmButton->hide();
+
+    ui->regCedulaEdit->clear();
+    ui->regNombreEdit->clear();
+    ui->regApellidoEdit->clear();
+    ui->regMailEdit->clear();
+    ui->regPasswordEdit->clear();
+
+}
+
+void loginwindow::on_registerConfirmButton_clicked()
+{
+    QString cedula = ui->regCedulaEdit->text().trimmed();
+    QString nombre = ui->regNombreEdit->text().trimmed();
+    QString apellido = ui->regApellidoEdit->text().trimmed();
+    QString correo = ui->regMailEdit->text().trimmed();
+    QString password = ui->regPasswordEdit->text().trimmed();
+
+    if (cedula.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || password.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Faltan llegar campos");
+        return;
+    }
+    QFile file(dataFile);
+
+    if (!file.open(QIODevice::Append | QIODevice::Text)) {
+        qDebug() << "No se pudo abrir el archivo, registro";
+        return;
     }
 
+    QTextStream out(&file);
+    out << cedula << ";"
+        << password << ";"
+        << apellido << ";"
+        << nombre << ";"
+        << correo << "\n";
+
+    file.close();
+
+    ui->messageLabel->setText("Registro exitoso. Ya puede iniciar sesión");
+
+    volverLogin();
 }
 
 void loginwindow::on_registerButton_clicked() {
-    ui->messageLabel->setText("Registro aún no implementado");
+    ui->cedulaEdit->hide();
+    ui->passwordEdit->hide();
+    ui->loginButton->hide();
+    ui->registerButton->hide();
+
+    ui->messageLabel->setText("Complete el registro");
+    ui->regCedulaEdit->show();
+    ui->regNombreEdit->show();
+    ui->regApellidoEdit->show();
+    ui->regMailEdit->show();
+    ui->regPasswordEdit->show();
+    ui->registerConfirmButton->show();
+
 }
+
+
