@@ -4,24 +4,24 @@
 #include <QWidget>
 
 namespace Ui {
-class rolewindow;
+class RoleWindow;
 }
 
-class rolewindow : public QWidget
+class RoleWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit rolewindow(QWidget *parent = nullptr);
-    ~rolewindow();
-
-private:
-    Ui::rolewindow *ui;
+    explicit RoleWindow(QWidget *parent = nullptr);
+    ~RoleWindow();
 
 private slots:
-    void on_clientButton_clicked();
-    void on_adminButton_clicked();
-    void on_exitButton_clicked();
+    void onClientButtonClicked();
+    void onAdminButtonClicked();
+    void onExitButtonClicked();
+
+private:
+    Ui::RoleWindow *ui;
 };
 
 #endif // ROLEWINDOW_H
