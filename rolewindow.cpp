@@ -2,30 +2,33 @@
 #include "ui_rolewindow.h"
 #include "loginwindow.h"
 
-rolewindow::rolewindow(QWidget *parent)
+RoleWindow::RoleWindow(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::rolewindow)
+    , ui(new Ui::RoleWindow)
 {
     ui->setupUi(this);
 }
 
-rolewindow::~rolewindow()
+RoleWindow::~RoleWindow()
 {
     delete ui;
 }
 
-void rolewindow::on_clientButton_clicked() {
-    loginwindow *login = new loginwindow(Cliente);
-    login ->show();
-    this->close();
-}
-
-void rolewindow::on_adminButton_clicked() {
-    loginwindow *login = new loginwindow(Administrador);
+void RoleWindow::onClientButtonClicked()
+{
+    LoginWindow *login = new LoginWindow(UserType::Cliente);
     login->show();
-    this->close();
+    close();
 }
 
-void rolewindow::on_exitButton_clicked() {
+void RoleWindow::onAdminButtonClicked()
+{
+    LoginWindow *login = new LoginWindow(UserType::Administrador);
+    login->show();
+    close();
+}
+
+void RoleWindow::onExitButtonClicked()
+{
     close();
 }

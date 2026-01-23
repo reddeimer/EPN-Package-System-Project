@@ -1,11 +1,12 @@
-#include "rolewindow.h"
-
 #include <QApplication>
+#include "rolewindow.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    rolewindow w;
-    w.show();
-    return a.exec();
+    QApplication application(argc, argv);
+
+    RoleWindow ventanaInicial;
+    ventanaInicial.show();
+
+    return application.exec();
 }
