@@ -183,20 +183,25 @@ void AdminWindow::onUpdateStatusButtonClicked()
     loadPackages();
 }
 
-void adminwindow::on_filterButton_clicked() {
-    QString filtro = ui->filterEdit->text().trimmed();
-    int filas = ui->packagesTable->rowCount();
+void AdminWindow::onFilterButtonClicked()
+{
+    const QString filtro = ui->filterEdit->text().trimmed();
+    const int totalRows = ui->packagesTable->rowCount();
 
-    for (int row = 0; row < filas; row++) {
-        QTableWidgetItem *itemCliente = ui->packagesTable->item(row, 1);
+    for (int row = 0; row < totalRows; ++row) {
+
+        QTableWidgetItem *itemCliente =
+            ui->packagesTable->item(row, 1);
 
         if (!itemCliente) {
             continue;
         }
 
-        QString cliente = itemCliente ->text();
+        const bool visible =
+            itemCliente->text().contains(filtro, Qt::CaseInsensitive) ||
+            filtro.isEmpty();
 
-        bool coincide = cliente.contains(filtro) || filtro.isEmpty();
-        ui->packagesTable->setRowHidden(row, !coincide);
+        ui->packagesTable->setRowHidden(row, !visible);
     }
 }
+
