@@ -65,6 +65,61 @@ void adminwindow::loadPackages()
     file.close();
 }
 
+void adminwindow::on_searchButton_clicked(){
+    QString idBuscado = ui->packageEdit->text().trimmed();
+
+    if (idBuscado.isEmpty()) {
+        ui->resultLabel->setText("Ingrese un ID");
+        return;
+    }
+
+    ifstream file("data/paquetes.txt");
+
+    if (!file.is_open()) {
+        qDebug() << "No se pudo abrir data/paquetes.txt";
+        return;
+    }
+
+    string line;
+    bool encontrado = false;
+
+    while (getline(file, line)) {
+
+        stringstream ss(line);
+        string field;
+        vector<string> fields;
+
+        while (getline(ss, field, ';')) {
+            fields.push_back(field);
+        }
+
+        if (fields.size() < 7) {
+            continue;
+        }
+
+        if (QString::fromStdString(fields[2]) == idBuscado) {
+
+            ui->resultLabel->setText(
+                "Cédula: " + QString::fromStdString(fields[0]) + "\n" +
+                "Cliente: " + QString::fromStdString(fields[1]) + "\n" +
+                "ID: " + QString::fromStdString(fields[2]) + "\n" +
+                "Estado: " + QString::fromStdString(fields[3]) + "\n" +
+                "Fecha: " + QString::fromStdString(fields[4]) + "\n" +
+                "Paquete: " + QString::fromStdString(fields[5]) + "\n" +
+                "Cantidad: " + QString::fromStdString(fields[6])
+            );
+
+            encontrado = true;
+            break;
+        }
+    }
+
+    file.close();
+
+    if (!encontrado) {
+        ui->resultLabel->setText("Paquete no encontrado");
+    }
+}
 
 void adminwindow::on_filterButton_clicked()
 {
