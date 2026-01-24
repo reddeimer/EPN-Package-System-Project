@@ -117,31 +117,34 @@ void AdminWindow::onSearchButtonClicked()
     }
 }
 
-void adminwindow::on_updateStatusButton_clicked() {
-    QString idBuscado = ui->packageEdit->text().trimmed();
-    QString nuevoEstado = ui->statusComboBox->currentText();
+void AdminWindow::onUpdateStatusButtonClicked()
+{
+    const QString idBuscado = ui->packageEdit->text().trimmed();
+    const QString nuevoEstado = ui->statusComboBox->currentText();
 
-    if(idBuscado.isEmpty()) {
+    if (idBuscado.isEmpty()) {
         ui->manageMessageLabel->setText("Ingrese un ID");
         return;
     }
 
-    ifstream file("daapaquetes.txt");
-    if(!file.is_open()) {
-        qDebug() << "No se pudo abrir paquetes.txt gestión de paquetes";
+    std::ifstream file("data/paquetes.txt");
+
+    if (!file.is_open()) {
+        qDebug() << "No se pudo abrir data/paquetes.txt";
         return;
     }
 
-    vector<vector<string>> paquetes;
-    string line;
+    std::vector<std::vector<std::string>> paquetes;
+    std::string line;
     bool encontrado = false;
 
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string field;
-        vector<string> fields;
+    while (std::getline(file, line)) {
 
-        while (getline(ss, field, ';')) {
+        std::stringstream ss(line);
+        std::string field;
+        std::vector<std::string> fields;
+
+        while (std::getline(ss, field, ';')) {
             fields.push_back(field);
         }
 
@@ -149,22 +152,31 @@ void adminwindow::on_updateStatusButton_clicked() {
             continue;
         }
 
-        if(QString::fromStdString(fields[2]) == idBuscado) {
+        if (QString::fromStdString(fields[2]) == idBuscado) {
             fields[3] = nuevoEstado.toStdString();
             encontrado = true;
         }
 
-        file.close();
+        paquetes.push_back(fields);
+    }
 
-        if(!encontrado) {
-            ui->manageMessageLabel->setText("Paquete no encontrado");
-            return;
-        }
+    file.close();
+
+    if (!encontrado) {
+        ui->manageMessageLabel->setText("Paquete no encontrado");
+        return;
     }
-    ofstream outFile("data/paquetes.txt", ios::trunc);
+
+    std::ofstream outFile("data/paquetes.txt", std::ios::trunc);
+
     for (const auto &p : paquetes) {
-        outFile << p[0] << ";" << p[1] << ";" << p[2] << ";" << p[3] << p[4] << "\n";
+        outFile << p[0] << ";"
+                << p[1] << ";"
+                << p[2] << ";"
+                << p[3] << ";"
+                << p[4] << "\n";
     }
+
     outFile.close();
 
     ui->manageMessageLabel->setText("Estado actualizado correctamente");
