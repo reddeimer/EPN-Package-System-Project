@@ -1,6 +1,5 @@
 #include "adminwindow.h"
 #include "ui_adminwindow.h"
-
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -119,6 +118,74 @@ void adminwindow::on_searchButton_clicked(){
     if (!encontrado) {
         ui->resultLabel->setText("Paquete no encontrado");
     }
+}
+
+void adminwindow::on_updateStatusButton_clicked()
+{
+    QString idBuscado = ui->packageEdit->text().trimmed();
+    QString nuevoEstado = ui->statusComboBox->currentText();
+
+    if (idBuscado.isEmpty()) {
+        ui->manageMessageLabel->setText("Ingrese un ID");
+        return;
+    }
+
+    ifstream file("data/paquetes.txt");
+
+    if (!file.is_open()) {
+        qDebug() << "No se pudo abrir data/paquetes.txt";
+        return;
+    }
+
+    vector<vector<string>> paquetes;
+    string line;
+    bool encontrado = false;
+
+    while (getline(file, line)) {
+
+        stringstream ss(line);
+        string field;
+        vector<string> fields;
+
+        while (getline(ss, field, ';')) {
+            fields.push_back(field);
+        }
+
+        if (fields.size() < 7) {
+            continue;
+        }
+
+        if (QString::fromStdString(fields[2]) == idBuscado) {
+            fields[3] = nuevoEstado.toStdString();
+            encontrado = true;
+        }
+
+        paquetes.push_back(fields);
+    }
+
+    file.close();
+
+    if (!encontrado) {
+        ui->manageMessageLabel->setText("Paquete no encontrado");
+        return;
+    }
+
+    ofstream outFile("data/paquetes.txt", ios::trunc);
+
+    for (const auto &p : paquetes) {
+        outFile << p[0] << ";"
+                << p[1] << ";"
+                << p[2] << ";"
+                << p[3] << ";"
+                << p[4] << ";"
+                << p[5] << ";"
+                << p[6] << "\n";
+    }
+
+    outFile.close();
+
+    ui->manageMessageLabel->setText("Estado actualizado correctamente");
+    loadPackages();
 }
 
 void adminwindow::on_filterButton_clicked()
