@@ -21,38 +21,43 @@ adminwindow::~adminwindow()
 }
 
 void adminwindow::loadPackages() {
-    ifstream file ("data/paquetes.txt");
+void AdminWindow::loadPackages()
+{
+    std::ifstream file("data/paquetes.txt");
 
     if (!file.is_open()) {
-        qDebug() << "No se pudo abrir paquetes.txt carga paquetes";
+        qDebug() << "No se pudo abrir data/paquetes.txt";
         return;
     }
 
     ui->packagesTable->setRowCount(0);
 
-    string line;
-    while(getline(file, line)) {
-        stringstream ss(line);
-        string field;
-        vector<string> fields;
+    std::string line;
+    while (std::getline(file, line)) {
 
-        while (getline(ss, field, ';')) {
+        std::stringstream ss(line);
+        std::string field;
+        std::vector<std::string> fields;
+
+        while (std::getline(ss, field, ';')) {
             fields.push_back(field);
         }
 
-        if(fields.size() != 5) {
+        if (fields.size() != 5) {
             continue;
         }
 
         int row = ui->packagesTable->rowCount();
         ui->packagesTable->insertRow(row);
 
-        for (int col = 0; col < 5; col++) {
+        for (int col = 0; col < 5; ++col) {
             ui->packagesTable->setItem(
                 row,
                 col,
-                new QTableWidgetItem(QString::fromStdString(fields[col]))
-                );
+                new QTableWidgetItem(
+                    QString::fromStdString(fields[col])
+                )
+            );
         }
     }
 
