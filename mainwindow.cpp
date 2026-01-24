@@ -45,7 +45,7 @@ void MainWindow::cargarMisPaquetes() {
 
         if (f[0].trimmed() == cedulaCliente) {
             ui->paquetesTable->insertRow(row);
-            for (int col = 0; col < 5; col++) {
+            for (int col = 0; col < 7; col++) {
                 ui->paquetesTable->setItem(row, col, new QTableWidgetItem(f[col]));
             };
             row++;
@@ -72,7 +72,7 @@ void MainWindow::on_buscarButton_clicked()
     while (!in.atEnd()) {
         QStringList f = in.readLine().split(";");
 
-        if (f.size() < 5) {
+        if (f.size() < 7) {
             continue;
         }
         if (f[2] == id && f[0] == cedulaCliente) {
