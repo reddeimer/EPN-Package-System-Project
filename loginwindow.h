@@ -30,6 +30,8 @@ private:
     Ui::loginwindow *ui;
     UserType userType;
     QString dataFile;
+    QString nombre;
+    QString dataPath;
     bool validateLogin(const QString &cedula, const QString &password);
     void volverLogin();
 };

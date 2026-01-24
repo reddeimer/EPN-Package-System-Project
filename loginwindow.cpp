@@ -21,6 +21,7 @@ loginwindow::loginwindow(UserType type, QWidget *parent)
     if (!dir.exists()) {
         dir.mkpath(".");
     }
+    dataPath = basePath + "/data";
 
     if (userType == Administrador) {
         ui->registerButton->hide();
@@ -75,6 +76,7 @@ bool loginwindow::validateLogin(const QString &cedula, const QString &password) 
         QString filePassword = parte[1].trimmed();
 
         if (fileCedula == cedula && filePassword == password) {
+            nombre = parte[1];
             file.close();
             return true;
         }
@@ -104,7 +106,7 @@ void loginwindow::on_loginButton_clicked() {
         admin->show();
         this->close();
     } else {
-        MainWindow *main = new MainWindow();
+        MainWindow *main = new MainWindow(cedula, nombre, dataPath);
         main->show();
         this->close();
     }
