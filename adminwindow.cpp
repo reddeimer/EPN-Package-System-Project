@@ -64,30 +64,32 @@ void AdminWindow::loadPackages()
     file.close();
 }
 
-void adminwindow::on_searchButton_clicked() {
-    QString cedulaBuscada = ui->packageEdit->text().trimmed();
+void AdminWindow::onSearchButtonClicked()
+{
+    const QString idBuscado = ui->packageEdit->text().trimmed();
 
-    if(cedulaBuscada.isEmpty()) {
+    if (idBuscado.isEmpty()) {
         ui->resultLabel->setText("Ingrese un ID");
         return;
     }
 
-    ifstream file ("data/paquetes.txt");
+    std::ifstream file("data/paquetes.txt");
 
-    if(!file.is_open()) {
-        qDebug() << "No se pudo abrir paquetes.txt busqueda paquetes";
+    if (!file.is_open()) {
+        qDebug() << "No se pudo abrir data/paquetes.txt";
         return;
     }
 
-    string line;
+    std::string line;
     bool encontrado = false;
 
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string field;
-        vector<string> fields;
+    while (std::getline(file, line)) {
 
-        while (getline(ss, field, ';')) {
+        std::stringstream ss(line);
+        std::string field;
+        std::vector<std::string> fields;
+
+        while (std::getline(ss, field, ';')) {
             fields.push_back(field);
         }
 
@@ -95,21 +97,22 @@ void adminwindow::on_searchButton_clicked() {
             continue;
         }
 
-        if (QString::fromStdString(fields[2]) == cedulaBuscada) {
-            QString resultado =
+        if (QString::fromStdString(fields[2]) == idBuscado) {
+            ui->resultLabel->setText(
                 "Cédula: " + QString::fromStdString(fields[0]) + "\n" +
                 "Cliente: " + QString::fromStdString(fields[1]) + "\n" +
                 "ID: " + QString::fromStdString(fields[2]) + "\n" +
                 "Estado: " + QString::fromStdString(fields[3]) + "\n" +
-                "Fecha: " + QString::fromStdString(fields[4]);
-            ui->resultLabel->setText(resultado);
+                "Fecha: " + QString::fromStdString(fields[4])
+            );
             encontrado = true;
             break;
         }
     }
+
     file.close();
 
-    if(!encontrado) {
+    if (!encontrado) {
         ui->resultLabel->setText("Paquete no encontrado");
     }
 }
