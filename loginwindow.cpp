@@ -21,7 +21,7 @@ loginwindow::loginwindow(UserType type, QWidget *parent)
     if (!dir.exists()) {
         dir.mkpath(".");
     }
-    dataPath = basePath + "/data";
+    dataPath = basePath + "/data/";
 
     if (userType == Administrador) {
         ui->registerButton->hide();
@@ -76,7 +76,7 @@ bool loginwindow::validateLogin(const QString &cedula, const QString &password) 
         QString filePassword = parte[1].trimmed();
 
         if (fileCedula == cedula && filePassword == password) {
-            nombre = parte[1];
+            nombre = parte[3];
             file.close();
             return true;
         }
@@ -102,7 +102,7 @@ void loginwindow::on_loginButton_clicked() {
     }
 
     if(userType == Administrador) {
-        adminwindow *admin = new adminwindow();
+        adminwindow *admin = new adminwindow(dataPath);
         admin->show();
         this->close();
     } else {
@@ -134,9 +134,9 @@ void loginwindow::volverLogin() {
 
 void loginwindow::on_registerConfirmButton_clicked()
 {
-    QString cedula = ui->regCedulaEdit->text().trimmed();
-    QString nombre = ui->regNombreEdit->text().trimmed();
-    QString apellido = ui->regApellidoEdit->text().trimmed();
+    QString cedula = ui->regCedulaEdit->text().trimmed().toLower();
+    QString nombre = ui->regNombreEdit->text().trimmed().toLower();
+    QString apellido = ui->regApellidoEdit->text().trimmed().toLower();
     QString correo = ui->regMailEdit->text().trimmed();
     QString password = ui->regPasswordEdit->text().trimmed();
 
@@ -178,7 +178,6 @@ void loginwindow::on_registerButton_clicked() {
     ui->regMailEdit->show();
     ui->regPasswordEdit->show();
     ui->registerConfirmButton->show();
-
 }
 
 
