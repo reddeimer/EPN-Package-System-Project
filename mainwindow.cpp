@@ -15,7 +15,6 @@ MainWindow::MainWindow(const QString &cedula, const QString &nombre, const QStri
     ui->setupUi(this);
     ui->paquetesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->welcomeLabel->setText("Bienvenido, " + nombreCliente);
-
     cargarMisPaquetes();
 }
 
@@ -27,7 +26,7 @@ MainWindow::~MainWindow()
 void MainWindow::cargarMisPaquetes() {
     ui->paquetesTable->setRowCount(0);
 
-    QFile file(dataPath + "/data/paquetes.txt");
+    QFile file(dataPath + "/paquetes.txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return;
     }
@@ -39,13 +38,13 @@ void MainWindow::cargarMisPaquetes() {
         QString line = in.readLine();
         QStringList f = line.split(";");
 
-        if (f.size() < 5) {
+        if (f.size() < 7) {
             continue;
         }
 
         if (f[0].trimmed() == cedulaCliente) {
             ui->paquetesTable->insertRow(row);
-            for (int col = 0; col < 5; col++) {
+            for (int col = 0; col < 7; col++) {
                 ui->paquetesTable->setItem(row, col, new QTableWidgetItem(f[col]));
             };
             row++;
@@ -54,6 +53,40 @@ void MainWindow::cargarMisPaquetes() {
     file.close();
 }
 
+bool MainWindow::solicitudYaExiste(const QString &idPaquete) {
+    QFile file(dataPath + "/solicitudes.txt");
+
+    if (!file.exists()) {
+        return false;
+    }
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "No se pudo abrir solicitudes.txt para validar";
+        return false;
+    }
+
+    QTextStream in(&file);
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList fields = line.split(";");
+
+        if(fields.size() < 4) {
+            continue;
+        }
+
+        QString fileID = fields[1].trimmed();
+        QString estado = fields[3].trimmed();
+
+        if(fileID == idPaquete && estado == "Pendiente") {
+            file.close();
+            return true;
+        }
+    }
+
+    file.close();
+    return false;
+}
 
 void MainWindow::on_buscarButton_clicked()
 {
@@ -72,11 +105,11 @@ void MainWindow::on_buscarButton_clicked()
     while (!in.atEnd()) {
         QStringList f = in.readLine().split(";");
 
-        if (f.size() < 5) {
+        if (f.size() < 7) {
             continue;
         }
         if (f[2] == id && f[0] == cedulaCliente) {
-            ui->resultadoLabel->setText("Estado: " + f[3] + "\nFecha: " + f[4]);
+            ui->resultadoLabel->setText("Nombre: " + f[5] + "\nEstado: " + f[3] + "\nFecha: " + f[4]);
             file.close();
             return;
         }
@@ -85,7 +118,6 @@ void MainWindow::on_buscarButton_clicked()
     file.close();
     ui->resultadoLabel->setText("Paquete no encontrado");
 }
-
 
 void MainWindow::on_requestButton_clicked()
 {
@@ -96,12 +128,16 @@ void MainWindow::on_requestButton_clicked()
         return;
     }
 
+    if(solicitudYaExiste(id)) {
+        QMessageBox::warning(this, "Error", "Este paquete ya tiene una solicitud pendiente");
+        return;
+    }
+
     QFile file(dataPath + "/solicitudes.txt");
     if (!file.open(QIODevice::Append | QIODevice::Text)) {
         ui->messageLabel->setText("Error al enviar solicitud");
         return;
     }
-
     QTextStream out(&file);
     out << cedulaCliente << ";"
         << id << ";"
@@ -112,13 +148,12 @@ void MainWindow::on_requestButton_clicked()
     ui->messageLabel->setText("Solicitud enviada correctamente");
 }
 
-
 void MainWindow::on_registerButton_clicked()
 {
     QString nombrePaquete = ui->nameEdit->text().trimmed().toLower();
     QString cantidad = ui->cuantitySpinBox->text().trimmed();
 
-    if (nombrePaquete.isEmpty() || cantidad.isEmpty()) {
+    if (nombrePaquete.isEmpty() || (cantidad.toInt() == 0)) {
         QMessageBox::warning(this, "Error", "Campos vacíos");
         return;
     }
@@ -134,12 +169,15 @@ void MainWindow::on_registerButton_clicked()
         }
 
         QTextStream in (&file);
-        while (in.atEnd()) {
+        while (!in.atEnd()) {
             QString line = in.readLine();
             QStringList parts = line.split(";");
 
             if (parts.size() >= 3) {
-                ultimoId = parts[2].toInt();
+                int id = parts[2].toInt();
+                if (id > ultimoId) {
+                    ultimoId = id;
+                }
             }
         }
         file.close();
@@ -167,5 +205,13 @@ void MainWindow::on_registerButton_clicked()
     file.close();
 
     qDebug() << "Paquete registrado con ID: " << nuevoId;
+    ui->nameEdit->setText("");
+    ui->cuantitySpinBox->setValue(-1);
+}
+
+
+void MainWindow::on_refreshButton_clicked()
+{
+    cargarMisPaquetes();
 }
 

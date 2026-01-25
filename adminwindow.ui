@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="listado">
     <property name="contextMenuPolicy">
@@ -32,12 +32,12 @@
     <attribute name="title">
      <string>Listado</string>
     </attribute>
-    <widget class="QLineEdit" name="filterEdit">
+    <widget class="QLineEdit" name="cedulaEdit">
      <property name="geometry">
       <rect>
        <x>9</x>
        <y>9</y>
-       <width>241</width>
+       <width>271</width>
        <height>23</height>
       </rect>
      </property>
@@ -45,7 +45,7 @@
       <number>10</number>
      </property>
      <property name="placeholderText">
-      <string>Ingrese la cédula para filtrar por cliente...</string>
+      <string>Ingrese la cédula para filtrar paquete por cliente...</string>
      </property>
     </widget>
     <widget class="QTableWidget" name="packagesTable">
@@ -58,7 +58,7 @@
       </rect>
      </property>
      <property name="columnCount">
-      <number>5</number>
+      <number>7</number>
      </property>
      <column>
       <property name="text">
@@ -85,30 +85,53 @@
        <string>Fecha</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>Nombre del Producto</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Cantidad de Producto</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QPushButton" name="loadButton">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>10</y>
+       <width>80</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Cargar</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="buscarCliente">
     <attribute name="title">
      <string>Buscar Cliente</string>
     </attribute>
-    <widget class="QLineEdit" name="filterEdit_2">
+    <widget class="QLineEdit" name="filterEdit">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>80</y>
+       <y>20</y>
        <width>241</width>
        <height>23</height>
       </rect>
      </property>
      <property name="placeholderText">
-      <string>Ingrese la cédula del Cliente para filtrar...</string>
+      <string>Ingrese la cédula del Cliente a buscar...</string>
      </property>
     </widget>
     <widget class="QPushButton" name="filterButton">
      <property name="geometry">
       <rect>
        <x>270</x>
-       <y>80</y>
+       <y>20</y>
        <width>80</width>
        <height>23</height>
       </rect>
@@ -121,9 +144,9 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>20</y>
-       <width>331</width>
-       <height>51</height>
+       <y>70</y>
+       <width>351</width>
+       <height>271</height>
       </rect>
      </property>
      <property name="text">
@@ -167,7 +190,7 @@
        <x>20</x>
        <y>50</y>
        <width>291</width>
-       <height>41</height>
+       <height>251</height>
       </rect>
      </property>
      <property name="text">
@@ -242,6 +265,60 @@
        <x>40</x>
        <y>60</y>
        <width>361</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="eliminar">
+    <attribute name="title">
+     <string>Eliminar paquete</string>
+    </attribute>
+    <widget class="QLineEdit" name="eliminarEdit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>201</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Ingrese el ID del paquete a eliminar...</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="eliminarButton">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>20</y>
+       <width>80</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Eliminar</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="solicitudesTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>621</width>
+       <height>461</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="eliminarLabel">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>24</y>
+       <width>301</width>
        <height>21</height>
       </rect>
      </property>

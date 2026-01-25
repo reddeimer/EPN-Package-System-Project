@@ -26,11 +26,14 @@ private slots:
 
     void on_registerButton_clicked();
 
+    void on_refreshButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString cedulaCliente;
     QString nombreCliente;
     QString dataPath;
     void cargarMisPaquetes();
+    bool solicitudYaExiste(const QString &idPaquete);
 };
 #endif // MAINWINDOW_H
